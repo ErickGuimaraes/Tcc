@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultiplayerNetworkSolution
 {
@@ -10,6 +6,12 @@ namespace MultiplayerNetworkSolution
     {
         static void Main(string[] args)
         {
+            Console.Title = "Multiplayer Network Server";
+
+            Server.Start(50, 26950);
+            Console.WriteLine("Ready");
+
+            Console.ReadKey();
         }
     }
 }
