@@ -13,6 +13,8 @@ namespace MultiplayerNetworkSolution
         public static int maxPlayers { get; private set; }
         public static int port { get; private set; }
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
+        public delegate void PacketHandler(int fromClient, Packet packet);
+        public static Dictionary<int, PacketHandler> packetHandlers;
 
         private static TcpListener tcpListener;
 
@@ -40,7 +42,7 @@ namespace MultiplayerNetworkSolution
 
             for (int i = 1; i <= maxPlayers; i++)
             {
-                if(clients[i].tcp.socket == null)
+                if (clients[i].tcp.socket == null)
                 {
                     clients[i].tcp.Connect(_client);
                     return;
@@ -53,10 +55,15 @@ namespace MultiplayerNetworkSolution
 
         private static void InitializeServerData()
         {
-            for(int i = 1; i <= maxPlayers; i++)
+            for (int i = 1; i <= maxPlayers; i++)
             {
                 clients.Add(i, new Client(i));
             }
+            packetHandlers = new Dictionary<int, PacketHandler>()
+                {
+                {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived }
+            };
+            Console.WriteLine("Initialized packets");
         }
     }
 }
