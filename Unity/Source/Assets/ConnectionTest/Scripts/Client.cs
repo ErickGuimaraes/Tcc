@@ -167,6 +167,8 @@ public class Client : MonoBehaviour
 
         public void Connect(int localPort)
         {
+            Debug.Log("Connecting UDP");
+
             socket = new UdpClient(localPort);
 
             socket.Connect(endPoint);
