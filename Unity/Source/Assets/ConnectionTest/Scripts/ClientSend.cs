@@ -16,6 +16,7 @@ public class ClientSend : MonoBehaviour
         Client.instance.udp.SendData(packet);
     }
 
+    #region Packets
     public static void WelcomeReceived()
     {
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
@@ -27,14 +28,20 @@ public class ClientSend : MonoBehaviour
 
         }
     }
-
-    public static void UDPTestReceived()
+    public static void PlayerMoviment(bool[] inputs)
     {
-        using (Packet packet = new Packet((int)ClientPackets.udpTestReceived))
+        using (Packet packet = new Packet((int)ClientPackets.playerMovement))
         {
-            packet.Write("Received a UDP packet.");
-
+            packet.Write(inputs.Length);
+            foreach (bool input in inputs)
+            {
+                packet.Write(input);
+            }
+            packet.Write(GameManager.players[Client.instance.myId].transform.rotation);
             SendUCPData(packet);
+        
         }
-    }
+    
+                }
+    #endregion
 }

@@ -70,13 +70,37 @@ namespace MultiplayerNetworkSolution
             }
         }
 
-        public static void UDPTest(int _toClient)
+        public static void SpawnPlayer(int toClient, Player player)
         {
-            using (Packet _packet = new Packet((int)ServerPackets.udpTest))
+            using (Packet packet = new Packet((int)ServerPackets.spawnPlayer))
             {
-                _packet.Write("A test packet for UDP.");
+                packet.Write(player.id);
+                packet.Write(player.userName);
+                packet.Write(player.position);
+                packet.Write(player.rotation);
 
-                SendUDPData(_toClient, _packet);
+                SendTCPData(toClient, packet);
+
+            }
+        }
+
+        public static void PlayerPosition(Player player)
+        {
+            using (Packet packet = new Packet((int)ServerPackets.playerPosition))
+            {
+                packet.Write(player.id);
+                packet.Write(player.position);
+                SendUDPDataToAll(packet);
+            }
+        }
+
+        public static void PlayerRotation(Player player)
+        {
+            using (Packet packet = new Packet((int)ServerPackets.playerPosition))
+            {
+                packet.Write(player.id);
+                packet.Write(player.rotation);
+                SendUDPDataToAll(player.id, packet);
             }
         }
     }

@@ -115,7 +115,7 @@ namespace MultiplayerNetworkSolution
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
                 {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
-                {(int)ClientPackets.udpTestReceived, ServerHandle.UDPTestReceived }
+                {(int)ClientPackets.playerMovement, Server.PlayerMoviment }
             };
             Console.WriteLine("Initialized packets");
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,14 +19,19 @@ namespace MultiplayerNetworkSolution
             {
                 Console.WriteLine($"Player \"{username}\"(ID: {fromClient}) has assumed the wronf client ID ({clientIdCheck}) !");
             }
-            // TODO: send player into game
+            Server.clients[fromClient].SendIntoGame(username);
         }
-
-        public static void UDPTestReceived(int _fromClient, Packet _packet)
+        public static void PlayerMovement(int fromClient, Packet packet)
         {
-            string _msg = _packet.ReadString();
+            bool[] inputs = new bool[packet.ReadInt()];
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                inputs[i] = packet.ReadBool();
+            }
+            Quaternion rotation = packet.ReadQuaternion();
 
-            Console.WriteLine($"Received packet via UDP. Contains message: {_msg}");
+            Server.clients[fromClient].player.SetInput(inputs, rotation);
         }
+
     }
 }
