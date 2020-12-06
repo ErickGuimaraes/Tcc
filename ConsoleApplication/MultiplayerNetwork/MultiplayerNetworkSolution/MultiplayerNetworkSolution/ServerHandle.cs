@@ -21,6 +21,8 @@ namespace MultiplayerNetworkSolution
             }
             Server.clients[fromClient].SendIntoGame(username);
         }
+
+
         public static void PlayerMovement(int fromClient, Packet packet)
         {
             bool[] inputs = new bool[packet.ReadInt()];

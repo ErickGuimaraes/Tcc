@@ -139,6 +139,15 @@ namespace MultiplayerNetworkSolution
                     Console.WriteLine($"Error sending data to player {id} via TCP: {ex}");
                 }
             }
+
+            public void Disconnect()
+            {
+                socket.Close();
+                stream = null;
+                receivedData = null;
+                receiveBuffer = null;
+                socket = null;
+            }
         }
 
         public class UDP
@@ -176,7 +185,14 @@ namespace MultiplayerNetworkSolution
                     }
                 });
             }
+
+            public void Disconnect()
+            {
+                endPoint = null;
+            }
         }
+
+
         public void SendIntoGame(string playerName)
         {
             player = new Player(id, playerName, new Vector3(0, 0, 0));
@@ -201,6 +217,16 @@ namespace MultiplayerNetworkSolution
 
                 }
             }
+        }
+
+        private void Disconnect()
+        {
+            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
+
+            player = null;
+
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }
