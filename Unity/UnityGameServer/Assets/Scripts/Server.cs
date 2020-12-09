@@ -45,6 +45,7 @@ public class Server
         {
             if (clients[i].tcp.socket == null)
             {
+                Debug.Log("teste ok " + i);
                 clients[i].tcp.Connect(_client);
                 return;
             }
@@ -105,15 +106,30 @@ public class Server
 
     private static void InitializeServerData()
     {
+        Debug.Log(maxPlayers + " MAX PLAYER");
         for (int i = 1; i <= maxPlayers; i++)
         {
             clients.Add(i, new Client(i));
         }
-        packetHandlers = new Dictionary<int, PacketHandler>()
-            {
+        
+        int val1 = (int)ClientPackets.welcomeReceived;
+        packetHandlers = new Dictionary<int, PacketHandler>();
+        Debug.Log("HDHDHA + " + val1);
+        Debug.Log("HDHDHA HAUHAUHAHU antes");
+        PacketHandler pckt1 = ServerHandle.WelcomeReceived;
+        Debug.Log("HDHDHA HAUHAUHAHU " + pckt1);
+        packetHandlers.Add(val1, pckt1);
+        Debug.Log("HDHDHA HAUHAUHAHU 4434");
+        val1 = (int)ClientPackets.playerMovement;
+        Debug.Log("HDHDHA HAUHAUHAHU 904095");
+        pckt1 = ServerHandle.PlayerMovement;
+        Debug.Log("HDHDHA HAUHAUHAHU 90409555541");
+        packetHandlers.Add(val1, pckt1);
+
+/*            {
                 {(int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 {(int)ClientPackets.playerMovement, ServerHandle.PlayerMovement }
-            };
+            };*/
         Debug.Log("Initialized packets");
     }
 }

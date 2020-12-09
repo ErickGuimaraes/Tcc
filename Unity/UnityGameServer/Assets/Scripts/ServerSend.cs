@@ -54,12 +54,16 @@ public class ServerSend
 
     public static void Welcome(int toClient, string message)
     {
+        Debug.Log("Before beg read in welc");
         using (Packet packet = new Packet((int)ServerPackets.welcome))
         {
+
+            Debug.Log("Before write read in welc");
             packet.Write(message);
             packet.Write(toClient);
-
+            Debug.Log("Before  sends tcp write read in welc");
             SendTCPData(toClient, packet);
+
 
         }
     }

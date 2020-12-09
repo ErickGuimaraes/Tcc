@@ -7,10 +7,13 @@ public class ServerHandle
 {
     public static void WelcomeReceived(int fromClient, Packet packet)
     {
+        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 123");
         int clientIdCheck = packet.ReadInt();
+        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1234");
         string username = packet.ReadString();
-
+        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {fromClient}.");
+        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if (fromClient != clientIdCheck)
         {
             Debug.Log($"Player \"{username}\"(ID: {fromClient}) has assumed the wronf client ID ({clientIdCheck}) !");

@@ -7,6 +7,7 @@ public class ClientHandle : MonoBehaviour
 {
     public static void Welcome(Packet packet)
     {
+        Debug.Log("Welcone Message from server:}");
         string message = packet.ReadString();
         int myId = packet.ReadInt();
 

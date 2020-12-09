@@ -44,11 +44,11 @@ public class Client
             stream = socket.GetStream();
 
             receivedData = new Packet();
-
             receiveBuffer = new byte[dataBufferSize];
 
+            Debug.Log("Before beg read");
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
-
+            Debug.Log("after beg read");
             ServerSend.Welcome(id, "Welcome to the server");
         }
 
@@ -56,28 +56,26 @@ public class Client
         {
             try
             {
-                int byteLenght = stream.EndRead(_result);
-                if (byteLenght <= 0)
+                int _byteLength = stream.EndRead(_result);
+                if (_byteLength <= 0)
                 {
-                    // TODO: disconnect
+                    Server.clients[id].Disconnect();
                     return;
                 }
 
-                byte[] data = new byte[byteLenght];
-                Array.Copy(receiveBuffer, data, byteLenght);
+                byte[] _data = new byte[_byteLength];
+                Array.Copy(receiveBuffer, _data, _byteLength);
 
-                receivedData.Reset(HandleData(data));
-
-                //TODO: handle recieve data
+                receivedData.Reset(HandleData(_data)); // Reset receivedData if all data was handled
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
-            catch (Exception e)
+            catch (Exception _ex)
             {
-
-                Debug.Log($"Error receiving TCP data {e}");
-                // TODO: disconnect
+                Debug.Log($"Error receiving TCP data: {_ex}");
+                Server.clients[id].Disconnect();
             }
         }
+
         private bool HandleData(byte[] data)
         {
             int packetLength = 0;
@@ -122,10 +120,13 @@ public class Client
 
         public void SendData(Packet packet)
         {
+            Debug.Log("Before TRY  sends tcp write read in welc");
             try
             {
+                Debug.Log("IN TRY  sends tcp write read in welc");
                 if (socket != null)
                 {
+                    Debug.Log("IN TRY if sends tcp write read in welc");
                     stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
                 }
 
